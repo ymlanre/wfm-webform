@@ -3,16 +3,22 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CustomInterceptorService } from './providers/custom-interceptor.service';
+import { ApiService } from './providers/api-service';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { WebformComponent } from './webform/webform.component';
 
 @NgModule({
-  declarations: [
-    AppComponent
+  declarations: [AppComponent, WebformComponent],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  providers: [
+    ApiService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CustomInterceptorService,
+      multi: true,
+    },
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
